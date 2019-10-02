@@ -49,5 +49,13 @@ De plus, sa location à l'intérieur est marquée dans la carte.
 4. API
    Dans ce projet, nous utilisons GoogleMap API  au mode extérieur pour construire la carte extérieure. 
    
+## Organisation 
 
+1. Sprint1: Dans le sprint1, nous va principalement réaliser les deux modes. Pour le mode extérieur, nous allons fournir la carte extérieure. Et nous allons proposer la fontionnalité pour changer le mode. Dans le mode intérieure, nous affichons seulement une carte de centre commercial.  
+
+2. Sprint2: Dans le sprint2, nous allons mocker les signaux de iBeacon pour la localisation à l'intérieur. De plus, nous pouvons téléchanger les informations de centre commercial.
+
+3. Sprint3: Test avec vrai iBeacon. Nous allons filltre les signaux et optimiser l'algorithme.
+
+4. Sprint4: Selon le résultat, nous allons réaliser un service pour envoyer la localisation 
 
