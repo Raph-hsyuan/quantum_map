@@ -6,7 +6,7 @@
 
 Quantum Map est une application mobile (Android/IOS), ce qui nous propose deux modes de localisation - mode intérieur et mode extérieur. Dans le mode extérieur, les utilisatuers peuvent visualiser une carte régulière. Quand les utilisatuers rentrent dans un bâtiment, l'application va proposer de passer automatiquement au mode intérieur. Dans le mode intérieur, l'application nous permet de visualiser une carte présise qui est associée à l'étage dans le bâtiment. Dans cette application, plusieurs capteurs/équipements sont utilisés pour nous permettre de recueillir les données et fournir une expérience utilisateur conviviale.
  
-## scénarios 
+## Scénarios 
 
 Utilisateur: Alice est professeur de françai, elle aime faire du shopping en weenkend. Mais elle n'a aucun sens de l'orientation et donc elle ne sait pas les locations de magasin. 
 
@@ -19,12 +19,14 @@ De plus, sa location à l'intérieur est marquée dans la carte.
 
 4. Quand Alice monte sur le troisième étage du centre commercial, l'application va afficher la carte associée. 
 
+## Architecture Logicielle
 
-## capteurs/équipement utilisés 
+![](https://github.com/huangshenyuan-unice/ELIM_2019/blob/b9cbb51e9d9632e51b8c2b86bb3b5e369837fae9/doc/dessin_Architecture.jpg?raw=true)
+## Capteurs/équipement utilisés 
 
-1. Bluetooth 5.0: Recevoir les données envoyées par iBeacon et s'agir à localisation intérieure
+1. Bluetooth 5.0: Recevoir les signaux envoyées par iBeacon et s'agir à localisation intérieure
 
-2. iBeacon 5.0：Envoyer les données afin de proposer les information de location
+2. iBeacon 5.0：Envoyer les signaux afin de proposer les information de location
 
 3. Capteur barométrique：Caculé avec les données reçues afin de calculer l'étage de l'utilisateur
 
@@ -36,14 +38,14 @@ De plus, sa location à l'intérieur est marquée dans la carte.
 
 ## Technologies de developpement
 
-1. Back-end: JAVA 
+1. Back-end: Python
 
 2. Front-end: Flutter (IOS/Android): cross-plateform
 
 3. Base de donnée
     a. Redit: les données de cartes
-    b. NoSQL: donnée massive sur le trafic client, notification
+    b. MySQL: donnée massive sur le trafic client (sera annalysé par Hadoop ...)
     
 4. API
-   Dans ce projet, nous utilisons GoogleMap API pour récupérer les données afin de stocker les informations dans notre base de donées. De plus, au mode extérieur, principalement nous utilison GoogleMap API pour construire la carte extérieure. 
+   Dans ce projet, nous utilisons GoogleMap API  au mode extérieur pour construire la carte extérieure. 
 
