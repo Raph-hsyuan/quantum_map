@@ -1,14 +1,21 @@
 # Quantum Map
 - HUANG Shenyuan, WANG Wei
-## scénario 
+##Introduction 
+Quantum Map est une application mobile(Android/IOS), ce qui nous propose deux mode de localisation - mode intérieur et mode extérieur. Dans le mode extérieur, les utilisatuers peuvent visualiser une carte régulière. Quand les utilisatuers rentrent dans l'immoble, l'application va passer automatiquement au mode intérieur. Dans le mode intérieur, l'application nous permet de visualiser une carte présise qui est associée à l'étage dans l'immoble. Dans cette application, plusieurs capteurs/équipement sont utilisés pour nous permettre de recueillir les données et fournir une expérience utilisateur conviviale.
+ 
+## scénarios 
 
-1. Lorsque je suis à l'extérieur, la carte est une carte régulière. Lorsque nous sommes proches d'un grand centre commercial ou d'une exposition et la balise est surveillée, la carte vous demande si vous souhaitez passer à la carte intérieure du centre commercial. Lorsque je pars, elle va changer le mode à l’extérieur automatiquement ou je peux le faire à la main.
+Client: Alice est professeur de françai, elle aime faire du shopping en weenkend. Mais elle n'a aucun sens de l'orientation et donc elle ne sait pas les locations de magasin. 
 
-2. Lorsque je veux aller dans un magasin spécifique, je peux faire une recherche partielle dans la carte de l'intérieur, sélectionnez la cible, la carte routière s'affichera automatiquement.
+1. Ce weekend, Alice va aller faire du shopping dans un grand centre commercial. Elle ouvri l'application et elle voit une carte régulière dans la quelle sa location est marquée en temp reél. Lorsqu'elle rentre dans le centre commercial, l'application lui demande si elle souhaite passer au mode intérieur. Alice l'accepte, et donc l'application lui montre une carte intérieure du centre commercial et elle peut voir tous les magasins dans cet étage.
+De plus, sa location à l'intérieur est marquée dans la carte. 
 
-3. Lorsque je suis passé du troisième étage du centre commercial au quatrième étage, il utilisera les données du capteur barométrique et Bluetooth pour calculer l’étage sur lequel vous vous trouvez et basculera automatiquement la carte sur le revêtement correspondant.
+2. Dans le centre commercial, Alice veut acheter un portable dans un magasin, mais elle ne sait pas la location. Donc elle fait une recherche "portable" dans l'aaplication, et l'application lui propose plusieurs choix. Elle choisi "HUAWEI", et l'application lui montre le routière vers "HUAWEI".
 
-4. Affichage noir automatique pour passer en mode d'économie d'énergie en marchant.
+3. Quand Alice marche dans le centre commercial, l'application va affichier noir automatiquement pour économiser l'énergie. 
+
+4. Quand Alice monte sur le troisième étage du centre commercial, l'application va afficher la carte associée. 
+
 
 ## capteurs/équipement utilisés 
 
