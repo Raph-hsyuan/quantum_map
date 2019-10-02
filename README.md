@@ -1,11 +1,14 @@
 # Quantum Map
+
 - HUANG Shenyuan, WANG Wei
+
 ## Introduction 
-Quantum Map est une application mobile(Android/IOS), ce qui nous propose deux mode de localisation - mode intérieur et mode extérieur. Dans le mode extérieur, les utilisatuers peuvent visualiser une carte régulière. Quand les utilisatuers rentrent dans l'immoble, l'application va passer automatiquement au mode intérieur. Dans le mode intérieur, l'application nous permet de visualiser une carte présise qui est associée à l'étage dans l'immoble. Dans cette application, plusieurs capteurs/équipement sont utilisés pour nous permettre de recueillir les données et fournir une expérience utilisateur conviviale.
+
+Quantum Map est une application mobile (Android/IOS), ce qui nous propose deux modes de localisation - mode intérieur et mode extérieur. Dans le mode extérieur, les utilisatuers peuvent visualiser une carte régulière. Quand les utilisatuers rentrent dans un bâtiment, l'application va proposer de passer automatiquement au mode intérieur. Dans le mode intérieur, l'application nous permet de visualiser une carte présise qui est associée à l'étage dans le bâtiment. Dans cette application, plusieurs capteurs/équipements sont utilisés pour nous permettre de recueillir les données et fournir une expérience utilisateur conviviale.
  
 ## scénarios 
 
-Client: Alice est professeur de françai, elle aime faire du shopping en weenkend. Mais elle n'a aucun sens de l'orientation et donc elle ne sait pas les locations de magasin. 
+Utilisateur: Alice est professeur de françai, elle aime faire du shopping en weenkend. Mais elle n'a aucun sens de l'orientation et donc elle ne sait pas les locations de magasin. 
 
 1. Ce weekend, Alice va aller faire du shopping dans un grand centre commercial. Elle ouvri l'application et elle voit une carte régulière dans la quelle sa location est marquée en temp reél. Lorsqu'elle rentre dans le centre commercial, l'application lui demande si elle souhaite passer au mode intérieur. Alice l'accepte, et donc l'application lui montre une carte intérieure du centre commercial et elle peut voir tous les magasins dans cet étage.
 De plus, sa location à l'intérieur est marquée dans la carte. 
