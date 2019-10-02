@@ -9,3 +9,17 @@
 3. Lorsque je suis passé du troisième étage du centre commercial au quatrième étage, il utilisera les données du capteur barométrique et Bluetooth pour calculer l’étage sur lequel vous vous trouvez et basculera automatiquement la carte sur le revêtement correspondant.
 
 4. Affichage noir automatique pour passer en mode d'économie d'énergie en marchant.
+
+## capteurs/équipement utilisés 
+
+1. Bluetooth 5.0
+
+2. iBeacon
+
+3. Capteur barométrique 
+
+4. Gyroscope 
+
+5. Boussole 
+
+6. GPS (a l'extérieur)
