@@ -5,17 +5,6 @@
 ## Introduction 
 
 Quantum Map est une application mobile (Android/IOS), ce qui nous propose deux modes de localisation - mode intérieur et mode extérieur. Dans le mode extérieur, les utilisatuers peuvent visualiser une carte régulière. Quand les utilisatuers rentrent dans un bâtiment, l'application va proposer de passer automatiquement au mode intérieur. Dans le mode intérieur, l'application nous permet de visualiser une carte présise qui est associée à l'étage dans le bâtiment. Dans cette application, plusieurs capteurs/équipements sont utilisés pour nous permettre de recueillir les données et fournir une expérience utilisateur conviviale.
-
-## Structure de projet
-
-La structure de projet est divisée par 3 partie: API, Front-end et Back-end.
-
-### API
-
-### Front-end
-
-### Back-end
-
  
 ## scénarios 
 
@@ -54,3 +43,7 @@ De plus, sa location à l'intérieur est marquée dans la carte.
 3. Base de donnée
     a. Redit: les données de cartes
     b. NoSQL: donnée massive sur le trafic client, notification
+    
+4. API
+   Dans ce projet, nous utilisons GoogleMap API pour récupérer les données afin de stocker les informations dans notre base de donées. De plus, au mode extérieur, principalement nous utilison GoogleMap API pour construire la carte extérieure. 
+
