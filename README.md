@@ -1,6 +1,6 @@
 # Quantum Map
 - HUANG Shenyuan, WANG Wei
-##Introduction 
+## Introduction 
 Quantum Map est une application mobile(Android/IOS), ce qui nous propose deux mode de localisation - mode intérieur et mode extérieur. Dans le mode extérieur, les utilisatuers peuvent visualiser une carte régulière. Quand les utilisatuers rentrent dans l'immoble, l'application va passer automatiquement au mode intérieur. Dans le mode intérieur, l'application nous permet de visualiser une carte présise qui est associée à l'étage dans l'immoble. Dans cette application, plusieurs capteurs/équipement sont utilisés pour nous permettre de recueillir les données et fournir une expérience utilisateur conviviale.
  
 ## scénarios 
