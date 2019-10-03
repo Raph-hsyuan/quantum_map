@@ -5,8 +5,15 @@
 ## Introduction 
 
 Quantum Map est une application mobile (Android/IOS), ce qui nous propose deux modes de localisation - mode intérieur et mode extérieur. De plus, C'est une application qui nous propose une grosse possibilité de l'utiliser vraiment partout. Dans le mode extérieur, les utilisatuers peuvent visualiser une carte régulière. Quand les utilisatuers rentrent dans un bâtiment, l'application va proposer de passer automatiquement au mode intérieur. Dans le mode intérieur, l'application nous permet de visualiser une carte présise qui est associée à l'étage dans le bâtiment. Dans cette application, plusieurs capteurs/équipements sont utilisés pour nous permettre de recueillir les données et fournir une expérience utilisateur conviviale.
+
  
+这是一个用于室内精确定位的手机应用（Android/IOS）。这款应用通过收集大量数据，通过机器学习与数据挖掘，为用户提供一个精确度非常高的室内定位系统。
+
 ## Scénarios 
+
+用户：Alice是一个刚开始工作清洁女工，她在一个古堡中工作。由于这是她的第一份工作，对于古堡的环境她还不熟悉。
+
+1. Alice在今天开始她的工作。她打开量子地图这个应用，用于实时显示她在古堡中所在的位置。她进入大厅，应用便即时显示她所在的位置是古堡的大厅。
 
 Utilisateur: Alice est professeur de françai, elle aime faire du shopping en weenkend. Mais elle n'a aucun sens de l'orientation et donc elle ne sait pas les locations de magasin. 
 
