@@ -1,68 +1,18 @@
-# Quantum Map
+![Application mobile - Localisation à l'intérieur](https://github.com/huangshenyuan-unice/ELIM_2019/blob/master/doc/logo.png)
 
-- HUANG Shenyuan, WANG Wei
+* [Introduction](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Introduction)
+    *   [Introduction de l'application](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Introduction#introduction-de-lapplication)
+    *   [Principe de l'application](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Introduction#principe-de-lapplication)
+    *   [Clients cibles](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Introduction#clients-cibles)
+* [Scénarios](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Scénarios)
+    *   [Scénario d'application](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Scénarios#scénario-dapplication) 
+    *   [Scénario d'utilisateur](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Scénarios#scénario-dutilisateur)
+* [Architecture logicielle](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Architecture-Logicielle)
+* [Technologies de développement ](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Technologies-de-développement)
+    *  [Front-end: Flutter](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Technologies-de-développement#front-end)
+    *  [Back-end: Python](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Technologies-de-développement#back-end)
+* [Organisation du projet](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Organisation-du-projet)
+* [Suivi le projet](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Suivi-le-projet)
 
-## Introduction 
 
-Quantum Map est une application mobile (Android/IOS), ce qui nous propose deux modes de localisation - mode intérieur et mode extérieur. De plus, C'est une application qui nous propose une grosse possibilité de l'utiliser vraiment partout. Dans le mode extérieur, les utilisatuers peuvent visualiser une carte régulière. Quand les utilisatuers rentrent dans un bâtiment, l'application va proposer de passer automatiquement au mode intérieur. Dans le mode intérieur, l'application nous permet de visualiser une carte présise qui est associée à l'étage dans le bâtiment. Dans cette application, plusieurs capteurs/équipements sont utilisés pour nous permettre de recueillir les données et fournir une expérience utilisateur conviviale.
-
- 
-这是一个用于室内精确定位的手机应用（Android/IOS）。这款应用通过收集大量数据，通过机器学习与数据挖掘，为用户提供一个精确度非常高的室内定位系统。
-
-## Scénarios 
-
-用户：Alice是一个刚开始工作清洁女工，她在一个古堡中工作。由于这是她的第一份工作，对于古堡的环境她还不熟悉。
-
-1. Alice在今天开始她的工作。她打开量子地图这个应用，用于实时显示她在古堡中所在的位置。她进入大厅，应用便即时显示她所在的位置是古堡的大厅。
-
-Utilisateur: Alice est professeur de françai, elle aime faire du shopping en weenkend. Mais elle n'a aucun sens de l'orientation et donc elle ne sait pas les locations de magasin. 
-
-1. Ce weekend, Alice va aller faire du shopping dans un grand centre commercial. Elle ouvri l'application et elle voit une carte régulière dans la quelle sa location est marquée en temp reél. Lorsqu'elle rentre dans le centre commercial, l'application lui demande si elle souhaite passer au mode intérieur. Alice l'accepte, et donc l'application lui montre une carte intérieure du centre commercial et elle peut voir tous les magasins dans cet étage.
-De plus, sa location à l'intérieur est marquée dans la carte. 
-
-2. Dans le centre commercial, Alice veut acheter un portable dans un magasin, mais elle ne sait pas la location. Donc elle fait une recherche "portable" dans l'aaplication, et l'application lui propose plusieurs choix. Elle choisi "HUAWEI", et l'application lui montre le routière vers "HUAWEI".
-
-3. Quand Alice marche dans le centre commercial, l'application va affichier noir automatiquement pour économiser l'énergie. 
-
-4. Quand Alice monte sur le troisième étage du centre commercial, l'application va afficher la carte associée. 
-
-## Architecture Logicielle
-
-![](https://github.com/huangshenyuan-unice/ELIM_2019/blob/b9cbb51e9d9632e51b8c2b86bb3b5e369837fae9/doc/dessin_Architecture.jpg?raw=true)
-## Capteurs/équipement utilisés 
-
-1. Bluetooth 5.0: Recevoir les signaux envoyées par iBeacon et s'agir à localisation intérieure
-
-2. iBeacon 5.0：Envoyer les signaux afin de proposer les information de location
-
-3. Capteur barométrique：Caculé avec les données reçues afin de calculer l'étage de l'utilisateur
-
-4. Gyroscope：Détecter l'orientation de portable afin d'économiser l'énergie
-
-5. Boussole：Détecter l'orientation de portable
-
-6. GPS (à l'extérieur)：Localisation à l'extérieur
-
-## Technologies de developpement
-
-1. Back-end: Python
-
-2. Front-end: Flutter (IOS/Android): cross-plateform
-
-3. Base de donnée
-    a. Redit: les données de cartes
-    b. MySQL: donnée massive sur le trafic client (sera annalysé par Hadoop ...)
-    
-4. API
-   Dans ce projet, nous utilisons GoogleMap API  au mode extérieur pour construire la carte extérieure. 
-   
-## Organisation 
-
-1. Sprint1: Dans le sprint1, nous va principalement réaliser les deux modes. Pour le mode extérieur, nous allons fournir la carte extérieure. Et nous allons proposer la fontionnalité pour changer le mode. Dans le mode intérieure, nous affichons seulement une carte de centre commercial.  
-
-2. Sprint2: Dans le sprint2, nous allons mocker les signaux de iBeacon pour la localisation à l'intérieur. De plus, nous pouvons téléchanger les informations de centre commercial.
-
-3. Sprint3: Test avec vrai iBeacon. Nous allons filltre les signaux et optimiser l'algorithme.
-
-4. Sprint4: Selon le résultat, nous allons réaliser un service pour envoyer la localisation 
 
