@@ -12,6 +12,7 @@
 *   [Schema d'architecture](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Architecture-Logicielle#Schema-darchitecture)
 *   [Description de l'architecture](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Architecture-Logicielle#Description-de-larchitecture)
 # Technologies de développement
+*  [Capteurs/équipement utilisés](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Technologies-de-développement#Technologies-de-développement-)
 *  [Front-end: Flutter](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Technologies-de-développement#front-end)
 *  [Back-end: Python](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Technologies-de-développement#back-end)
 *  [Serveur Principale: EC2](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Technologies-de-développement#Serveur-Principale)
