@@ -14,6 +14,8 @@
         android:label="Quantum Map"
         android:icon="@mipmap/ic_launcher"
         tools:ignore="GoogleAppIndexingWarning">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="@string/MAP_RELEASE_API_KEY"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
