@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'BeaconScanner.dart';
 
 class StaffMainPage extends StatelessWidget {
   @override
@@ -69,27 +70,25 @@ class GoogleMapSimpleState extends State<GoogleMapSimple> {
                 border: OutlineInputBorder(),
               ),
             )),
+        Positioned(
+          top: 100,
+          left: 100,
+          right: 100,
+          child: GestureDetector(
+              onLongPress: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Beacons()),
+                );
+              },
+              child: Image.asset(
+                'images/ibeacon.png',
+                width: 100,
+                height: 100,
+              )),
+        )
       ]),
     );
-//      GoogleMap(
-//        mapType: MapType.hybrid,
-//        initialCameraPosition: _Nice,
-//        onMapCreated: (GoogleMapController controller) {
-//          _controller.complete(controller);
-//        },
-//      ),
-//      floatingActionButton: FloatingActionButton.extended(
-//        onPressed: _startDepolyment,
-//        label: Text('Déploiement'),
-//        icon: Icon(Icons.golf_course),
-//      ),
-//      bottomNavigationBar: TextField(
-//        obscureText: true,
-//        decoration: InputDecoration(
-//          border: OutlineInputBorder(),
-//          labelText: 'Password',
-//        ),
-//      ),
   }
 
   Future<void> _startDepolyment() async {}

@@ -3,7 +3,6 @@
     package="com.quantum.quantum_map"
     android:versionCode="v0.1"
     android:versionName="First Demo">
-
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
          In most cases you can leave this as-is, but you if you want to provide
