@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:quantum_map/StaffMap.dart';
 import 'BeaconScanner.dart';
 
 class StaffMainPage extends StatelessWidget {
@@ -91,5 +92,10 @@ class GoogleMapSimpleState extends State<GoogleMapSimple> {
     );
   }
 
-  Future<void> _startDepolyment() async {}
+  Future<void> _startDepolyment() async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => StaffMap()),
+    );
+  }
 }
