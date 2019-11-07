@@ -1,7 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:quantum_map/VisitorMap.dart';
+
+import 'BeaconScanner.dart';
 
 class VisitorMainPage extends StatelessWidget {
   @override
@@ -21,15 +25,15 @@ class GoogleMapSimple extends StatefulWidget {
 class GoogleMapSimpleState extends State<GoogleMapSimple> {
   Completer<GoogleMapController> _controller = Completer();
 
-  static final CameraPosition _Nice = CameraPosition(
-    target: LatLng(43.6915029, 7.294096),
-    zoom: 13,
+  static final CameraPosition _initialPos = CameraPosition(
+    target: LatLng(43.6154734, 7.0718325),
+    zoom: 10,
   );
 
-  static final CameraPosition _beachNice = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(43.6941192, 7.2786143),
-      tilt: 59.440717697143555,
+  static final CameraPosition _classroom = CameraPosition(
+      bearing: 229.8334901395799,
+      target: LatLng(43.6154734, 7.0718325),
+      tilt: 10.440717697143555,
       zoom: 19.151926040649414);
 
   @override
@@ -37,21 +41,26 @@ class GoogleMapSimpleState extends State<GoogleMapSimple> {
     return new Scaffold(
       body: GoogleMap(
         mapType: MapType.hybrid,
-        initialCameraPosition: _Nice,
+        initialCameraPosition: _initialPos,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToBeachNice,
-        label: Text('To Beach!'),
-        icon: Icon(Icons.directions_boat),
+        onPressed: _goToSchool,
+        label: Text('To O101!'),
+        icon: Icon(Icons.school),
       ),
     );
   }
 
-  Future<void> _goToBeachNice() async {
+  Future<void> _goToSchool() async {
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_beachNice));
+    controller.animateCamera(CameraUpdate.newCameraPosition(_classroom));
+    await Future.delayed(const Duration(seconds: 3), () {});
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => VisitorMap()),
+    );
   }
 }
