@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:quantum_map/VisitorMap.dart';
+
+import 'BeaconScanner.dart';
 
 class VisitorMainPage extends StatelessWidget {
   @override

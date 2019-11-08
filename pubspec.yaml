@@ -28,6 +28,7 @@ dependencies:
   flutter_compass: ^0.3.4
   sensors: ^0.4.1
   flutter_spinkit: ^4.0.0
+  path_provider: ^1.4.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

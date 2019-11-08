@@ -1,8 +1,13 @@
+import 'dart:collection';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_beacon/flutter_beacon.dart';
 import 'dart:async';
 import 'dart:ui';
 import 'package:flutter_compass/flutter_compass.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/services.dart';
 
 class Line {
   Offset p1;
@@ -11,6 +16,16 @@ class Line {
   Line(Offset p1, Offset p2) {
     this.p1 = p1;
     this.p2 = p2;
+  }
+}
+
+class Position {
+  int top;
+  int left;
+
+  Position(int top, int left) {
+    this.top = top;
+    this.left = left;
   }
 }
 
@@ -24,13 +39,17 @@ class _StaffMapState extends State<StaffMap>
   //AnimationController controller;
   final lines = <Line>[];
   final points = <Offset>[];
+  final positions = <Position>[];
   bool checkingState = false;
   String region = 'O+101';
   Offset current = Offset(-100, -100);
-
-  _StaffMapState();
-
   StreamSubscription<RangingResult> _streamRanging;
+  final _regionBeacons = <Region, List<Beacon>>{};
+  final _beacons = <Beacon>[];
+  final _beaconsCollector = HashMap<String, double>();
+  final _beaconsList = <String>[];
+  bool logging = false;
+  _StaffMapState();
   StreamSubscription<double> _streamDoubleRanging;
   double _direction;
   double pi = 3.1415926;
@@ -43,6 +62,23 @@ class _StaffMapState extends State<StaffMap>
   void initState() {
     super.initState();
     initMap();
+    initBeacon();
+    positions.add(new Position(0, 0));
+    positions.add(new Position(0, 100));
+    positions.add(new Position(0, 200));
+    positions.add(new Position(80, 0));
+    positions.add(new Position(80, 100));
+    positions.add(new Position(80, 200));
+    positions.add(new Position(160, 0));
+    positions.add(new Position(160, 100));
+    positions.add(new Position(160, 200));
+    positions.add(new Position(240, 200));
+    _beaconsList.add("E4:F5:46:61:6F:7A131343");
+    _beaconsList.add("C3:A7:10:53:3F:BB147935");
+    _beaconsList.add("D0:5F:5B:74:8E:B21256");
+    _beaconsList.add("D2:2A:96:01:1A:C1149434");
+    _beaconsList.add("F1:80:31:49:9A:5E124218");
+
     _streamDoubleRanging = FlutterCompass.events.listen((double direction) {
       setState(() {
         _direction = direction;
@@ -74,6 +110,80 @@ class _StaffMapState extends State<StaffMap>
       _streamDoubleRanging.cancel();
     }
     super.dispose();
+  }
+
+  Future<File> _getLocalFile() async {
+    String dir = (await getApplicationDocumentsDirectory()).path;
+    return new File('$dir/points.txt');
+  }
+
+  void saveFingerprintToFiles() async {
+    String fg = "";
+
+    _beaconsList.forEach((key) {
+      fg += _beaconsCollector[key].toString() + ",";
+    });
+    fg += '\n';
+    await (await _getLocalFile()).writeAsString(fg);
+    print(fg);
+    _beaconsCollector.clear();
+  }
+
+  initBeacon() async {
+    try {
+      await flutterBeacon.initializeScanning;
+      print('Beacon scanner initialized');
+    } on PlatformException catch (e) {
+      print(e);
+    }
+
+    final regions = <Region>[];
+
+    if (Platform.isIOS) {
+      regions.add(Region(
+          identifier: 'com.bluecats.BlueCats',
+          proximityUUID: '61687109-905F-4436-91F8-E602F514C96D'));
+    } else {
+      regions.add(Region(identifier: 'com.aprilbrother'));
+    }
+
+    _streamRanging = flutterBeacon.ranging(regions).listen((result) {
+      if (logging) {
+        if (result != null && mounted) {
+          _regionBeacons[result.region] = result.beacons;
+          _beacons.clear();
+          _regionBeacons.values.forEach((list) {
+            _beacons.addAll(list);
+          });
+          _beacons.sort(_compareParameters);
+          _beacons.forEach((beacon) {
+            _beaconsCollector[beacon.macAddress +
+                beacon.major.toString() +
+                beacon.minor.toString()] = beacon.accuracy * 100;
+          });
+          if (_beaconsCollector.length == 5) {
+            saveFingerprintToFiles();
+            setState(() {
+              logging = false;
+            });
+          }
+        }
+      }
+    });
+  }
+
+  int _compareParameters(Beacon a, Beacon b) {
+    int compare = a.proximityUUID.compareTo(b.proximityUUID);
+
+    if (compare == 0) {
+      compare = a.major.compareTo(b.major);
+    }
+
+    if (compare == 0) {
+      compare = a.minor.compareTo(b.minor);
+    }
+
+    return compare;
   }
 
   @override
@@ -120,7 +230,9 @@ class _StaffMapState extends State<StaffMap>
                                       height: 70.0,
                                       child: RaisedButton(
                                         onPressed: () {
-                                          // Add your onPressed code here!
+                                          setState(() {
+                                            logging = true;
+                                          }); // Add your onPressed code here!
                                         },
                                       ),
                                     ),
@@ -135,7 +247,9 @@ class _StaffMapState extends State<StaffMap>
                                       height: 70.0,
                                       child: RaisedButton(
                                         onPressed: () {
-                                          // Add your onPressed code here!
+                                          setState(() {
+                                            logging = true;
+                                          }); // Add your onPressed code here!
                                         },
                                       ),
                                     ),
@@ -150,7 +264,9 @@ class _StaffMapState extends State<StaffMap>
                                       height: 70.0,
                                       child: RaisedButton(
                                         onPressed: () {
-                                          // Add your onPressed code here!
+                                          setState(() {
+                                            logging = true;
+                                          }); // Add your onPressed code here!
                                         },
                                       ),
                                     ),
@@ -165,7 +281,9 @@ class _StaffMapState extends State<StaffMap>
                                       height: 70.0,
                                       child: RaisedButton(
                                         onPressed: () {
-                                          // Add your onPressed code here!
+                                          setState(() {
+                                            logging = true;
+                                          }); // Add your onPressed code here!
                                         },
                                       ),
                                     ),
@@ -180,7 +298,9 @@ class _StaffMapState extends State<StaffMap>
                                       height: 70.0,
                                       child: RaisedButton(
                                         onPressed: () {
-                                          // Add your onPressed code here!
+                                          setState(() {
+                                            logging = true;
+                                          }); // Add your onPressed code here!
                                         },
                                       ),
                                     ),
@@ -195,7 +315,9 @@ class _StaffMapState extends State<StaffMap>
                                       height: 70.0,
                                       child: RaisedButton(
                                         onPressed: () {
-                                          // Add your onPressed code here!
+                                          setState(() {
+                                            logging = true;
+                                          }); // Add your onPressed code here!
                                         },
                                       ),
                                     ),
@@ -210,7 +332,9 @@ class _StaffMapState extends State<StaffMap>
                                       height: 70.0,
                                       child: RaisedButton(
                                         onPressed: () {
-                                          // Add your onPressed code here!
+                                          setState(() {
+                                            logging = true;
+                                          }); // Add your onPressed code here!
                                         },
                                       ),
                                     ),
@@ -225,7 +349,9 @@ class _StaffMapState extends State<StaffMap>
                                       height: 70.0,
                                       child: RaisedButton(
                                         onPressed: () {
-                                          // Add your onPressed code here!
+                                          setState(() {
+                                            logging = true;
+                                          }); // Add your onPressed code here!
                                         },
                                       ),
                                     ),
@@ -240,7 +366,9 @@ class _StaffMapState extends State<StaffMap>
                                       height: 70.0,
                                       child: RaisedButton(
                                         onPressed: () {
-                                          // Add your onPressed code here!
+                                          setState(() {
+                                            logging = true;
+                                          }); // Add your onPressed code here!
                                         },
                                       ),
                                     ),
@@ -255,7 +383,9 @@ class _StaffMapState extends State<StaffMap>
                                       height: 70.0,
                                       child: RaisedButton(
                                         onPressed: () {
-                                          // Add your onPressed code here!
+                                          setState(() {
+                                            logging = true;
+                                          }); // Add your onPressed code here!
                                         },
                                       ),
                                     ),
