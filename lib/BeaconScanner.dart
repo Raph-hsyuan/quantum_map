@@ -43,7 +43,7 @@ class _BeaconsState extends State<Beacons> {
           identifier: 'com.bluecats.BlueCats',
           proximityUUID: '61687109-905F-4436-91F8-E602F514C96D'));
     } else {
-      regions.add(Region(identifier: 'com.beacon'));
+      regions.add(Region(identifier: 'com.aprilbrother'));
     }
 
     _streamRanging = flutterBeacon.ranging(regions).listen((result) {
@@ -98,12 +98,18 @@ class _BeaconsState extends State<Beacons> {
                     tiles: _beacons.map((beacon) {
                       return ListTile(
                         title: Text(
-                            beacon.proximityUUID + beacon.minor.toString()),
+                            beacon.proximityUUID +
+                                "\t" +
+                                " major : " +
+                                beacon.major.toString() +
+                                " minor : " +
+                                beacon.minor.toString(),
+                            style: TextStyle(fontSize: 10.0)),
                         subtitle: new Row(
                           mainAxisSize: MainAxisSize.max,
                           children: <Widget>[
                             Flexible(
-                                child: Text('Distance: ${beacon.accuracy}m\n',
+                                child: Text('Acc: ${beacon.accuracy}m\n',
                                     style: TextStyle(fontSize: 23.0)),
                                 flex: 2,
                                 fit: FlexFit.tight)

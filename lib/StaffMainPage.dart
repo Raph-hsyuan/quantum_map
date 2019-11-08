@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:quantum_map/StaffMap.dart';
 import 'BeaconScanner.dart';
 
 class StaffMainPage extends StatelessWidget {
@@ -26,12 +27,6 @@ class GoogleMapSimpleState extends State<GoogleMapSimple> {
     target: LatLng(43.6915029, 7.294096),
     zoom: 13,
   );
-
-  static final CameraPosition _beachNice = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(43.6941192, 7.2786143),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
 
   @override
   Widget build(BuildContext context) {
@@ -91,5 +86,10 @@ class GoogleMapSimpleState extends State<GoogleMapSimple> {
     );
   }
 
-  Future<void> _startDepolyment() async {}
+  Future<void> _startDepolyment() async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => StaffMap()),
+    );
+  }
 }
