@@ -106,7 +106,7 @@ class _VisitorMapState extends State<VisitorMap>
                           right: 35,
                           child: new Stack(
                             children: <Widget>[
-                              Image.asset('images/classroom.jpg'),
+                              Image.asset('images/classroom.png'),
                               CustomPaint(
                                   willChange: true,
                                   child: new Container(),
@@ -144,12 +144,6 @@ class _VisitorMapState extends State<VisitorMap>
                             maxLines: 1,
                             textAlign: TextAlign.left,
                           )),
-                      Positioned(
-                          top: current.dy - 27.5,
-                          left: current.dx - 27.5,
-                          child: Transform.rotate(
-                              angle: ((_direction ?? 0) * (pi / 180)),
-                              child: new Image.asset('images/Point.png'))),
                     ])))));
   }
 

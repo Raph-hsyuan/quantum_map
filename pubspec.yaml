@@ -30,6 +30,7 @@ dependencies:
   flutter_spinkit: ^4.0.0
   path_provider: ^1.4.0
   ovprogresshud: ^0.2.5
+  simple_cluster: ^0.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
