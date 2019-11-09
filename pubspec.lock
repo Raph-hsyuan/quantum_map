@@ -123,6 +123,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.7"
+  ovprogresshud:
+    dependency: "direct main"
+    description:
+      name: ovprogresshud
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.5"
   path:
     dependency: transitive
     description:

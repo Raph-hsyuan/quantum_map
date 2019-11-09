@@ -8,6 +8,7 @@ import 'dart:ui';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart';
+import 'package:ovprogresshud/progresshud.dart';
 
 class Line {
   Offset p1;
@@ -22,6 +23,7 @@ class Line {
 class Position {
   int top;
   int left;
+  int recordPoint = 0;
 
   Position(int top, int left) {
     this.top = top;
@@ -57,7 +59,8 @@ class _StaffMapState extends State<StaffMap>
   bool shakeState = false;
   int shakeStopCount = 0;
   String currentBeaconID = '';
-
+  Position currentPosition = new Position(-1, -1);
+  final _totalProjectBeacons = new HashMap<Position, List<String>>();
   @override
   void initState() {
     super.initState();
@@ -119,13 +122,30 @@ class _StaffMapState extends State<StaffMap>
 
   void saveFingerprintToFiles() async {
     String fg = "";
-
+    String success = "";
+    int i = 1;
+    bool first = true;
     _beaconsList.forEach((key) {
-      fg += _beaconsCollector[key].toString() + ",";
+      fg += (first ? "" : ",") + _beaconsCollector[key].toStringAsFixed(2);
+      first = false;
+      success += "Signal #" +
+          (i++).toString() +
+          " : " +
+          _beaconsCollector[key].toStringAsFixed(2) +
+          " mm\n";
     });
     fg += '\n';
     await (await _getLocalFile()).writeAsString(fg);
     print(fg);
+    if (_totalProjectBeacons[currentPosition] == null) {
+      _totalProjectBeacons[currentPosition] = new List<String>();
+    }
+    _totalProjectBeacons[currentPosition].add(fg);
+    Progresshud.dismiss();
+    Progresshud.showSuccessWithStatus("Terminé avec succès\n\n\n" + success);
+    setState(() {
+      currentPosition.recordPoint = currentPosition.recordPoint + 1;
+    });
     _beaconsCollector.clear();
   }
 
@@ -206,191 +226,16 @@ class _StaffMapState extends State<StaffMap>
                             icon: Icon(Icons.check),
                             label: new Text("Terminer",
                                 style: new TextStyle(fontFamily: 'Broadwell')),
-                            onPressed: () {},
+                            onPressed: () {
+                              _showConfirmDialog();
+                            },
                           )),
                       Positioned(
                           top: 250,
                           left: 35,
                           right: 35,
                           child: new Stack(
-                            children: <Widget>[
-                              Image.asset('images/classroom.jpg'),
-                              CustomPaint(
-                                  willChange: true,
-                                  child: new Container(),
-                                  foregroundPainter:
-                                      new MapPainter(lines, points)),
-                              Positioned(
-                                  top: 0,
-                                  left: 0,
-                                  child: Opacity(
-                                    opacity: 0.3,
-                                    child: new SizedBox(
-                                      width: 90.0,
-                                      height: 70.0,
-                                      child: RaisedButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            logging = true;
-                                          }); // Add your onPressed code here!
-                                        },
-                                      ),
-                                    ),
-                                  )),
-                              Positioned(
-                                  top: 0,
-                                  left: 100,
-                                  child: Opacity(
-                                    opacity: 0.3,
-                                    child: new SizedBox(
-                                      width: 90.0,
-                                      height: 70.0,
-                                      child: RaisedButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            logging = true;
-                                          }); // Add your onPressed code here!
-                                        },
-                                      ),
-                                    ),
-                                  )),
-                              Positioned(
-                                  top: 0,
-                                  left: 200,
-                                  child: Opacity(
-                                    opacity: 0.3,
-                                    child: new SizedBox(
-                                      width: 90.0,
-                                      height: 70.0,
-                                      child: RaisedButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            logging = true;
-                                          }); // Add your onPressed code here!
-                                        },
-                                      ),
-                                    ),
-                                  )),
-                              Positioned(
-                                  top: 80,
-                                  left: 0,
-                                  child: Opacity(
-                                    opacity: 0.3,
-                                    child: new SizedBox(
-                                      width: 90.0,
-                                      height: 70.0,
-                                      child: RaisedButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            logging = true;
-                                          }); // Add your onPressed code here!
-                                        },
-                                      ),
-                                    ),
-                                  )),
-                              Positioned(
-                                  top: 80,
-                                  left: 100,
-                                  child: Opacity(
-                                    opacity: 0.3,
-                                    child: new SizedBox(
-                                      width: 90.0,
-                                      height: 70.0,
-                                      child: RaisedButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            logging = true;
-                                          }); // Add your onPressed code here!
-                                        },
-                                      ),
-                                    ),
-                                  )),
-                              Positioned(
-                                  top: 80,
-                                  left: 200,
-                                  child: Opacity(
-                                    opacity: 0.3,
-                                    child: new SizedBox(
-                                      width: 90.0,
-                                      height: 70.0,
-                                      child: RaisedButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            logging = true;
-                                          }); // Add your onPressed code here!
-                                        },
-                                      ),
-                                    ),
-                                  )),
-                              Positioned(
-                                  top: 160,
-                                  left: 0,
-                                  child: Opacity(
-                                    opacity: 0.3,
-                                    child: new SizedBox(
-                                      width: 90.0,
-                                      height: 70.0,
-                                      child: RaisedButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            logging = true;
-                                          }); // Add your onPressed code here!
-                                        },
-                                      ),
-                                    ),
-                                  )),
-                              Positioned(
-                                  top: 160,
-                                  left: 100,
-                                  child: Opacity(
-                                    opacity: 0.3,
-                                    child: new SizedBox(
-                                      width: 90.0,
-                                      height: 70.0,
-                                      child: RaisedButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            logging = true;
-                                          }); // Add your onPressed code here!
-                                        },
-                                      ),
-                                    ),
-                                  )),
-                              Positioned(
-                                  top: 160,
-                                  left: 200,
-                                  child: Opacity(
-                                    opacity: 0.3,
-                                    child: new SizedBox(
-                                      width: 90.0,
-                                      height: 70.0,
-                                      child: RaisedButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            logging = true;
-                                          }); // Add your onPressed code here!
-                                        },
-                                      ),
-                                    ),
-                                  )),
-                              Positioned(
-                                  top: 240,
-                                  left: 200,
-                                  child: Opacity(
-                                    opacity: 0.3,
-                                    child: new SizedBox(
-                                      width: 90.0,
-                                      height: 70.0,
-                                      child: RaisedButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            logging = true;
-                                          }); // Add your onPressed code here!
-                                        },
-                                      ),
-                                    ),
-                                  )),
-                            ],
+                            children: getMapContent(context),
                           )),
                       Positioned(
                           top: 180,
@@ -428,26 +273,78 @@ class _StaffMapState extends State<StaffMap>
                           child: Transform.rotate(
                               angle: ((_direction ?? 0) * (pi / 180)),
                               child: new Image.asset('images/Point.png'))),
-                      //-->TODO!!! Buttons below are very Bad practices, just for demo !!!! Never forget to come back and change them
                     ])))));
   }
 
-  void showAlertDialog(BuildContext context, String message) {
-    NavigatorState navigator =
-        context.rootAncestorStateOfType(const TypeMatcher<NavigatorState>());
-    debugPrint("navigator is null?" + (navigator == null).toString());
+  void _showConfirmDialog() {
     showDialog(
         context: context,
-        builder: (_) => new AlertDialog(
-              shape: new RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40)),
-              title: new Text("UNE ERREUR",
-                  style:
-                      new TextStyle(fontSize: 20.0, fontFamily: 'Broadwell')),
-              content: new Text(message,
-                  style:
-                      new TextStyle(fontSize: 16.0, fontFamily: 'Broadwell')),
-            ));
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Confirmation'),
+            content: Text(
+                'Vos données seront envoyées au serveur pour la formation'),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Annuler')),
+              FlatButton(
+                onPressed: () {
+                  print(_totalProjectBeacons.values
+                      .reduce((f, v) => f + v)
+                      .reduce((a, b) => a + b));
+                  Navigator.pop(context);
+                },
+                child: Text('Valider'),
+              )
+            ],
+          );
+        });
+  }
+
+  List<Widget> getMapContent(BuildContext context) {
+    List<Widget> children = [];
+    children.add(Image.asset('images/classroom.png'));
+    children.add(new CustomPaint(
+        willChange: true,
+        child: new Container(),
+        foregroundPainter: new MapPainter(lines, points)));
+    positions.forEach((p) {
+      children.add(new Positioned(
+          top: p.top.toDouble(),
+          left: p.left.toDouble(),
+          child: Opacity(
+            opacity: p.recordPoint >= 4
+                ? 1
+                : p.recordPoint >= 3
+                    ? 0.8
+                    : p.recordPoint >= 2 ? 0.6 : p.recordPoint >= 1 ? 0.4 : 0.2,
+            child: new SizedBox(
+              width: 90.0,
+              height: 70.0,
+              child: RaisedButton(
+                child: Text(
+                    "Nombre : " +
+                        (p.recordPoint >= 4
+                            ? p.recordPoint.toString() + "\nSuffisant"
+                            : p.recordPoint.toString() + "\nInsuffisant"),
+                    style: TextStyle(fontSize: 11)),
+                color: p.recordPoint >= 1 ? Colors.green : Colors.white,
+                onPressed: () {
+                  setState(() {
+                    logging = true;
+                    currentPosition = p;
+                  }); // Add your onPressed code here!
+                  Progresshud.setDefaultMaskTypeGradient();
+                  Progresshud.showWithStatus('Détecter les signaux...');
+                },
+              ),
+            ),
+          )));
+    });
+    return children;
   }
 }
 

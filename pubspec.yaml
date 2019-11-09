@@ -29,6 +29,7 @@ dependencies:
   sensors: ^0.4.1
   flutter_spinkit: ^4.0.0
   path_provider: ^1.4.0
+  ovprogresshud: ^0.2.5
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -81,7 +82,7 @@ flutter:
     - images/ibeacon.png
     - images/Point.png
     - images/mapBg.jpg
-    - images/classroom.jpg
+    - images/classroom.png
   fonts:
     - family: Broadwell
       fonts:
