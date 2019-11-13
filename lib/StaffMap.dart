@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_beacon/flutter_beacon.dart';
 import 'dart:async';
 import 'dart:ui';
-import 'package:flutter_compass/flutter_compass.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart';
 import 'package:ovprogresshud/progresshud.dart';
+// ignore: implementation_imports
+import 'package:simple_cluster/src/dbscan.dart';
 
 class Line {
   Offset p1;
@@ -47,20 +48,30 @@ class _StaffMapState extends State<StaffMap>
   Offset current = Offset(-100, -100);
   StreamSubscription<RangingResult> _streamRanging;
   final _regionBeacons = <Region, List<Beacon>>{};
+  final _regionBeaconsPos = <Region, List<Beacon>>{};
+
   final _beacons = <Beacon>[];
+  final _beaconsPos = <Beacon>[];
+
   final _beaconsCollector = HashMap<String, double>();
+  final _beaconsCollectorPos = HashMap<String, double>();
+
   final _beaconsList = <String>[];
   bool logging = false;
+  bool positioning = false;
   _StaffMapState();
   StreamSubscription<double> _streamDoubleRanging;
-  double _direction;
   double pi = 3.1415926;
-  double shaking = 0.2;
-  bool shakeState = false;
-  int shakeStopCount = 0;
   String currentBeaconID = '';
   Position currentPosition = new Position(-1, -1);
   final _totalProjectBeacons = new HashMap<Position, List<String>>();
+  final _totalMapDouble = new HashMap<Position, List<List<double>>>();
+  final _totalProjectBeaconsDouble = new List<List<double>>();
+  double epsilon = 50;
+  DBSCAN dbscan = new DBSCAN(
+    epsilon: 50,
+    minPoints: 3,
+  );
   @override
   void initState() {
     super.initState();
@@ -81,12 +92,6 @@ class _StaffMapState extends State<StaffMap>
     _beaconsList.add("D0:5F:5B:74:8E:B21256");
     _beaconsList.add("D2:2A:96:01:1A:C1149434");
     _beaconsList.add("F1:80:31:49:9A:5E124218");
-
-    _streamDoubleRanging = FlutterCompass.events.listen((double direction) {
-      setState(() {
-        _direction = direction;
-      });
-    });
   }
 
   updatePosition() async {}
@@ -125,8 +130,10 @@ class _StaffMapState extends State<StaffMap>
     String success = "";
     int i = 1;
     bool first = true;
+    List<double> doubleList = new List<double>();
     _beaconsList.forEach((key) {
       fg += (first ? "" : ",") + _beaconsCollector[key].toStringAsFixed(2);
+      doubleList.add(_beaconsCollector[key]);
       first = false;
       success += "Signal #" +
           (i++).toString() +
@@ -134,12 +141,17 @@ class _StaffMapState extends State<StaffMap>
           _beaconsCollector[key].toStringAsFixed(2) +
           " mm\n";
     });
+//    _totalProjectBeaconsDouble.add(doubleList);
     fg += '\n';
     await (await _getLocalFile()).writeAsString(fg);
     print(fg);
     if (_totalProjectBeacons[currentPosition] == null) {
       _totalProjectBeacons[currentPosition] = new List<String>();
     }
+    if (_totalMapDouble[currentPosition] == null) {
+      _totalMapDouble[currentPosition] = new List<List<double>>();
+    }
+    _totalMapDouble[currentPosition].add(doubleList);
     _totalProjectBeacons[currentPosition].add(fg);
     Progresshud.dismiss();
     Progresshud.showSuccessWithStatus("Terminé avec succès\n\n\n" + success);
@@ -189,7 +201,71 @@ class _StaffMapState extends State<StaffMap>
           }
         }
       }
+      if (positioning) {
+        if (result != null && mounted) {
+          _regionBeaconsPos[result.region] = result.beacons;
+          _beaconsPos.clear();
+          _regionBeaconsPos.values.forEach((list) {
+            _beaconsPos.addAll(list);
+          });
+          _beaconsPos.sort(_compareParameters);
+          _beaconsPos.forEach((beacon) {
+            _beaconsCollectorPos[beacon.macAddress +
+                beacon.major.toString() +
+                beacon.minor.toString()] = beacon.accuracy * 100;
+          });
+          if (_beaconsCollectorPos.length == 5) {
+            Position where = locating();
+            if (where.top == -404) {
+              positioning = false;
+              Progresshud.dismiss();
+              Progresshud.showErrorWithStatus("Pas réussi");
+            } else {
+              Progresshud.dismiss();
+              Progresshud.showSuccessWithStatus("Terminé avec succès");
+              setState(() {
+                points.clear();
+                points.add(new Offset(
+                    where.left.toDouble() + 50, where.top.toDouble() + 40));
+                positioning = false;
+              });
+            }
+          }
+        }
+      }
     });
+  }
+
+  Position locating() {
+    List<List<double>> pos = new List<List<double>>();
+    pos.addAll(_totalProjectBeaconsDouble);
+    List<double> doubleList = new List<double>();
+    _beaconsList.forEach((key) {
+      doubleList.add(_beaconsCollectorPos[key]);
+    });
+    pos.add(doubleList);
+    dbscan.run(pos);
+    int area = dbscan.label[dbscan.label.length - 1];
+    if (area == -1) {
+      return new Position(-404, -404);
+    }
+    int mark = -404;
+    for (int i = 0; i < dbscan.label.length; i++) {
+      if (dbscan.label[i] == area) {
+        mark = i;
+        break;
+      }
+    }
+    if (mark == -404) {
+      return new Position(-404, -404);
+    }
+    for (Position key in _totalMapDouble.keys) {
+      mark -= _totalMapDouble[key].length;
+      if (mark <= 0) {
+        return key;
+      }
+    }
+    return new Position(-404, -404);
   }
 
   int _compareParameters(Beacon a, Beacon b) {
@@ -220,7 +296,7 @@ class _StaffMapState extends State<StaffMap>
                     child: new Stack(children: <Widget>[
                       Positioned(
                           top: 190,
-                          right: 35,
+                          right: 25,
                           child: FloatingActionButton.extended(
                             backgroundColor: Colors.brown[600],
                             icon: Icon(Icons.check),
@@ -231,6 +307,17 @@ class _StaffMapState extends State<StaffMap>
                             },
                           )),
                       Positioned(
+                          top: 190,
+                          left: 25,
+                          child: IconButton(
+                            icon: Icon(Icons.my_location),
+                            iconSize: 40,
+                            color: Colors.brown[600],
+                            onPressed: () {
+                              getLocation();
+                            },
+                          )),
+                      Positioned(
                           top: 250,
                           left: 35,
                           right: 35,
@@ -238,7 +325,7 @@ class _StaffMapState extends State<StaffMap>
                             children: getMapContent(context),
                           )),
                       Positioned(
-                          top: 180,
+                          top: 130,
                           left: 35,
                           child: new Text(
                             region,
@@ -252,7 +339,7 @@ class _StaffMapState extends State<StaffMap>
                             textAlign: TextAlign.left,
                           )),
                       Positioned(
-                          top: 100,
+                          top: 60,
                           left: 35,
                           right: 35,
                           child: new Text(
@@ -268,11 +355,37 @@ class _StaffMapState extends State<StaffMap>
                             textAlign: TextAlign.left,
                           )),
                       Positioned(
-                          top: current.dy - 27.5,
-                          left: current.dx - 27.5,
-                          child: Transform.rotate(
-                              angle: ((_direction ?? 0) * (pi / 180)),
-                              child: new Image.asset('images/Point.png'))),
+                        top: 580,
+                        left: 10,
+                        right: 10,
+                        child: Slider(
+                          min: 0,
+                          max: 300,
+                          activeColor: Colors.brown,
+                          inactiveColor: Colors.black,
+                          value: epsilon,
+                          onChanged: (newValue) {
+                            setState(() {
+                              dbscan = new DBSCAN(
+                                epsilon: newValue,
+                                minPoints: 3,
+                              );
+                              epsilon = newValue;
+                            });
+                          },
+                          onChangeStart: (startValue) {
+                            print('onChangeStart:$startValue');
+                          },
+                          onChangeEnd: (endValue) {
+                            print('onChangeEnd:$endValue');
+                          },
+                          label: 'epsilon=$epsilon',
+                          divisions: 300,
+                          semanticFormatterCallback: (newValue) {
+                            return 'epsilon=${newValue.round()}';
+                          },
+                        ),
+                      ),
                     ])))));
   }
 
@@ -295,7 +408,15 @@ class _StaffMapState extends State<StaffMap>
                   print(_totalProjectBeacons.values
                       .reduce((f, v) => f + v)
                       .reduce((a, b) => a + b));
+                  _totalProjectBeaconsDouble.clear();
+                  for (Position key in _totalMapDouble.keys) {
+                    _totalProjectBeaconsDouble.addAll(_totalMapDouble[key]);
+                  }
+                  dbscan.run(_totalProjectBeaconsDouble);
+                  print('result:' + dbscan.label.toString());
                   Navigator.pop(context);
+                  Progresshud.showSuccessWithStatus(
+                      'result:' + dbscan.label.toString());
                 },
                 child: Text('Valider'),
               )
@@ -307,31 +428,35 @@ class _StaffMapState extends State<StaffMap>
   List<Widget> getMapContent(BuildContext context) {
     List<Widget> children = [];
     children.add(Image.asset('images/classroom.png'));
-    children.add(new CustomPaint(
-        willChange: true,
-        child: new Container(),
-        foregroundPainter: new MapPainter(lines, points)));
     positions.forEach((p) {
+      bool enough = false;
+      if (_totalMapDouble[p] != null) {
+        dbscan.run(_totalMapDouble[p]);
+        for (int data in dbscan.label) {
+          if (data == 0) {
+            enough = true;
+            break;
+          }
+        }
+      }
       children.add(new Positioned(
           top: p.top.toDouble(),
           left: p.left.toDouble(),
           child: Opacity(
-            opacity: p.recordPoint >= 4
-                ? 1
-                : p.recordPoint >= 3
-                    ? 0.8
-                    : p.recordPoint >= 2 ? 0.6 : p.recordPoint >= 1 ? 0.4 : 0.2,
+            opacity: enough ? 1 : 0.4,
             child: new SizedBox(
               width: 90.0,
               height: 70.0,
               child: RaisedButton(
                 child: Text(
                     "Nombre : " +
-                        (p.recordPoint >= 4
-                            ? p.recordPoint.toString() + "\nSuffisant"
-                            : p.recordPoint.toString() + "\nInsuffisant"),
+                        (enough
+                            ? (p.recordPoint.toString() +
+                                "\nSuffisant\n" +
+                                dbscan.label.toString())
+                            : (p.recordPoint.toString() + "\nInsuffisant\n")),
                     style: TextStyle(fontSize: 11)),
-                color: p.recordPoint >= 1 ? Colors.green : Colors.white,
+                color: enough ? Colors.green : Colors.white,
                 onPressed: () {
                   setState(() {
                     logging = true;
@@ -344,7 +469,23 @@ class _StaffMapState extends State<StaffMap>
             ),
           )));
     });
+    children.add(new CustomPaint(
+        willChange: true,
+        child: new Container(),
+        foregroundPainter: new MapPainter(lines, points)));
     return children;
+  }
+
+  void getLocation() async {
+    if (_totalMapDouble.length < 2) {
+      Progresshud.showErrorWithStatus("Positionnement Non Disponible !");
+      return;
+    }
+    setState(() {
+      positioning = true;
+    });
+    Progresshud.setDefaultMaskTypeGradient();
+    Progresshud.showWithStatus('Positionnement ...');
   }
 }
 
