@@ -53,18 +53,16 @@ class _VisitorMapState extends State<VisitorMap>
   updatePosition() async {}
 
   initMap() async {
-    lines.add(Line(Offset(0.0, 0.0), Offset(290.0, 0)));
-    lines.add(Line(Offset(290.0, 0.0), Offset(290.0, 330.0)));
-    lines.add(Line(Offset(290.0, 330.0), Offset(180.0, 330.0)));
-    lines.add(Line(Offset(180.0, 320.0), Offset(180.0, 330.0)));
-    lines.add(Line(Offset(290.0, 230.0), Offset(180.0, 230.0)));
-    lines.add(Line(Offset(180.0, 220.0), Offset(180.0, 260.0)));
+    lines.add(Line(Offset(0.0, 0.0), Offset(320.0, 0)));
+    lines.add(Line(Offset(320.0, 0.0), Offset(320.0, 365.0)));
+    lines.add(Line(Offset(320.0, 365.0), Offset(200.0, 365.0)));
+    lines.add(Line(Offset(200.0, 345.0), Offset(200.0, 365.0)));
+    lines.add(Line(Offset(320.0, 250.0), Offset(200.0, 250.0)));
+    lines.add(Line(Offset(200.0, 240.0), Offset(200.0, 260.0)));
 
-    lines.add(Line(Offset(0.0, 0.0), Offset(0.0, 230.0)));
-    lines.add(Line(Offset(0.0, 230.0), Offset(130.0, 230.0)));
-    lines.add(Line(Offset(130.0, 220.0), Offset(130.0, 330.0)));
-
-    points.add(Offset(200, 200));
+    lines.add(Line(Offset(0.0, 0.0), Offset(0.0, 250.0)));
+    lines.add(Line(Offset(0.0, 250.0), Offset(150.0, 250.0)));
+    lines.add(Line(Offset(150.0, 240.0), Offset(150.0, 360.0)));
   }
 
   @override
