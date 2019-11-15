@@ -479,13 +479,13 @@ class _StaffMapState extends State<StaffMap>
         }
       }
       children.add(new Positioned(
-          top: p.top.toDouble(),
-          left: p.left.toDouble(),
+          top: p.top.toDouble()+10,
+          left: p.left.toDouble()+12,
           child: Opacity(
             opacity: enough ? 1 : 0.4,
             child: new SizedBox(
-              width: 115.0,
-              height: 80.0,
+              width: 96.0,
+              height: 75.0,
               child: RaisedButton(
                 child: Text(
                     "Nombre : " +
