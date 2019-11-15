@@ -40,8 +40,8 @@ class _BeaconsState extends State<Beacons> {
 
     if (Platform.isIOS) {
       regions.add(Region(
-          identifier: 'com.bluecats.BlueCats',
-          proximityUUID: '61687109-905F-4436-91F8-E602F514C96D'));
+          identifier: 'com.aprilbrother.rfc1034identifier',
+          proximityUUID: 'B5B182C7-EAB1-4988-AA99-B5C1517008D9'));
     } else {
       regions.add(Region(identifier: 'com.aprilbrother'));
     }
