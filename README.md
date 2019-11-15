@@ -33,6 +33,6 @@
 
 # Démostration du projet
 * [L'interface de visiteur](https://github.com/huangshenyuan-unice/quantum_map/wiki/Démonstration--du-projet#linterface-du-visiteur)
-* [L'interface pour le déploiement et la localisation](https://github.com/huangshenyuan-unice/quantum_map/wiki/Démonstration--du-projet#le-déploiement-et-la-localisation)
+* [L'interface de devéloppeur](https://github.com/huangshenyuan-unice/quantum_map/wiki/Démonstration--du-projet#le-déploiement-et-la-localisation)
 
 
