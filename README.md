@@ -4,7 +4,7 @@
 *   [Introduction de l'application](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Introduction#introduction-de-lapplication)
 *   [Principe de l'application](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Introduction#principe-de-lapplication)
 *   [Clients cibles](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Introduction#clients-cibles)
-*   [UI](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Introduction#UI)
+*   [UI Draft](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Introduction#UI)
 *   [Algorithme-DBSCAN](https://github.com/huangshenyuan-unice/quantum_map/wiki/Algorithme-DBSCAN)
 *   [First Demo](https://github.com/huangshenyuan-unice/quantum_map/wiki/D%C3%A9monstration--du-projet)
 # Scénarios
