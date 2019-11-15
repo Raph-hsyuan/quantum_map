@@ -35,5 +35,7 @@
 # Démostration du projet
 * [L'interface de visiteur](https://github.com/huangshenyuan-unice/quantum_map/wiki/Démonstration--du-projet#linterface-du-visiteur)
 * [L'interface de devéloppeur](https://github.com/huangshenyuan-unice/quantum_map/wiki/Démonstration--du-projet#le-déploiement-et-la-localisation)
+* [L'adjustement dynamique](https://github.com/huangshenyuan-unice/quantum_map/wiki/Démonstration--du-projet#la-fonctionnalité-pour-lajustement-dynamique)
+
 
 
