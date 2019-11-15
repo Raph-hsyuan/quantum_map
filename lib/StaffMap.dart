@@ -101,16 +101,16 @@ class _StaffMapState extends State<StaffMap>
   updatePosition() async {}
 
   initMap() async {
-    lines.add(Line(Offset(0.0, 0.0), Offset(290.0, 0)));
-    lines.add(Line(Offset(290.0, 0.0), Offset(290.0, 330.0)));
-    lines.add(Line(Offset(290.0, 330.0), Offset(180.0, 330.0)));
-    lines.add(Line(Offset(180.0, 320.0), Offset(180.0, 330.0)));
-    lines.add(Line(Offset(290.0, 230.0), Offset(180.0, 230.0)));
-    lines.add(Line(Offset(180.0, 220.0), Offset(180.0, 260.0)));
+    lines.add(Line(Offset(0.0, 0.0), Offset(320.0, 0)));
+    lines.add(Line(Offset(320.0, 0.0), Offset(320.0, 365.0)));
+    lines.add(Line(Offset(320.0, 365.0), Offset(200.0, 365.0)));
+    lines.add(Line(Offset(200.0, 345.0), Offset(200.0, 365.0)));
+    lines.add(Line(Offset(320.0, 250.0), Offset(200.0, 250.0)));
+    lines.add(Line(Offset(200.0, 240.0), Offset(200.0, 260.0)));
 
-    lines.add(Line(Offset(0.0, 0.0), Offset(0.0, 230.0)));
-    lines.add(Line(Offset(0.0, 230.0), Offset(130.0, 230.0)));
-    lines.add(Line(Offset(130.0, 220.0), Offset(130.0, 330.0)));
+    lines.add(Line(Offset(0.0, 0.0), Offset(0.0, 250.0)));
+    lines.add(Line(Offset(0.0, 250.0), Offset(150.0, 250.0)));
+    lines.add(Line(Offset(150.0, 240.0), Offset(150.0, 360.0)));
   }
 
   @override
@@ -394,7 +394,7 @@ class _StaffMapState extends State<StaffMap>
                             textAlign: TextAlign.left,
                           )),
                       Positioned(
-                        top: 580,
+                        top: 640,
                         left: 10,
                         right: 10,
                         child: Slider(
@@ -484,8 +484,8 @@ class _StaffMapState extends State<StaffMap>
           child: Opacity(
             opacity: enough ? 1 : 0.4,
             child: new SizedBox(
-              width: 90.0,
-              height: 70.0,
+              width: 115.0,
+              height: 80.0,
               child: RaisedButton(
                 child: Text(
                     "Nombre : " +
