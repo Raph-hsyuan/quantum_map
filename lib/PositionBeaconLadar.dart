@@ -16,12 +16,16 @@ class MyPositionBeaconLadar extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: AppBar(title: Text('Beacon Ladar')),
-        body: Center(
-            child: new CustomPaint(
+        body: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("images/ladar.jpeg"),
+                    fit: BoxFit.cover)),
+            child: Center(
+                child: new CustomPaint(
               size: new Size(15, 15),
               painter: new MyPainter(),
-            )
-        ));
+            ))));
   }
 }
 
@@ -40,10 +44,9 @@ class MyPainter extends CustomPainter {
     ..isAntiAlias = true
     ..strokeWidth = 15.0;
 
-
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.drawCircle(new Offset(0, 0), 15, _paintCenter);
+    canvas.drawCircle(new Offset(7, 29), 15, _paintCenter);
     points.add(new Offset(10, 200));
     points.add(new Offset(0, 150));
     points.add(new Offset(-75, 0));
@@ -56,6 +59,4 @@ class MyPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) {
     return null;
   }
-
 }
-

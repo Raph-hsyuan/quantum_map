@@ -84,6 +84,7 @@ flutter:
     - images/Point.png
     - images/mapBg.jpg
     - images/classroom.png
+    - images/ladar.jpeg
   fonts:
     - family: Broadwell
       fonts:
