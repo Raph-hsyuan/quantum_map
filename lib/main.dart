@@ -4,4 +4,4 @@ import 'package:quantum_map/StaffMap.dart';
 import 'ChooseStaffVisitor.dart';
 
 void main() =>
-    runApp(MaterialApp(title: 'Quantum Map', home: PositionBeaconLadar()));
+    runApp(MaterialApp(title: 'Quantum Map', home: ChooseStaffVisitor()));

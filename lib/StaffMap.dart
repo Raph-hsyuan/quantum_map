@@ -8,7 +8,6 @@ import 'dart:ui';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart';
 import 'package:ovprogresshud/progresshud.dart';
-
 // ignore: implementation_imports
 import 'package:simple_cluster/src/dbscan.dart';
 
@@ -60,9 +59,7 @@ class _StaffMapState extends State<StaffMap>
   final _beaconsList = <String>[];
   bool logging = false;
   bool positioning = false;
-
   _StaffMapState();
-
   StreamSubscription<double> _streamDoubleRanging;
   double pi = 3.1415926;
   String currentBeaconID = '';
@@ -75,7 +72,6 @@ class _StaffMapState extends State<StaffMap>
     epsilon: 50,
     minPoints: 3,
   );
-
   @override
   void initState() {
     super.initState();
@@ -101,16 +97,16 @@ class _StaffMapState extends State<StaffMap>
   updatePosition() async {}
 
   initMap() async {
-    lines.add(Line(Offset(0.0, 0.0), Offset(320.0, 0)));
-    lines.add(Line(Offset(320.0, 0.0), Offset(320.0, 365.0)));
-    lines.add(Line(Offset(320.0, 365.0), Offset(200.0, 365.0)));
-    lines.add(Line(Offset(200.0, 345.0), Offset(200.0, 365.0)));
-    lines.add(Line(Offset(320.0, 250.0), Offset(200.0, 250.0)));
-    lines.add(Line(Offset(200.0, 240.0), Offset(200.0, 260.0)));
+    lines.add(Line(Offset(0.0, 0.0), Offset(290.0, 0)));
+    lines.add(Line(Offset(290.0, 0.0), Offset(290.0, 330.0)));
+    lines.add(Line(Offset(290.0, 330.0), Offset(180.0, 330.0)));
+    lines.add(Line(Offset(180.0, 320.0), Offset(180.0, 330.0)));
+    lines.add(Line(Offset(290.0, 230.0), Offset(180.0, 230.0)));
+    lines.add(Line(Offset(180.0, 220.0), Offset(180.0, 260.0)));
 
-    lines.add(Line(Offset(0.0, 0.0), Offset(0.0, 250.0)));
-    lines.add(Line(Offset(0.0, 250.0), Offset(150.0, 250.0)));
-    lines.add(Line(Offset(150.0, 240.0), Offset(150.0, 360.0)));
+    lines.add(Line(Offset(0.0, 0.0), Offset(0.0, 230.0)));
+    lines.add(Line(Offset(0.0, 230.0), Offset(130.0, 230.0)));
+    lines.add(Line(Offset(130.0, 220.0), Offset(130.0, 330.0)));
   }
 
   @override
@@ -136,17 +132,14 @@ class _StaffMapState extends State<StaffMap>
     bool first = true;
     List<double> doubleList = new List<double>();
     _beaconsList.forEach((key) {
-      print("8888888888888888888" + key);
-      if (_beaconsCollector[key] != null) {
-        fg += (first ? "" : ",") + _beaconsCollector[key].toStringAsFixed(2);
-        doubleList.add(_beaconsCollector[key]);
-        first = false;
-        success += "Signal #" +
-            (i++).toString() +
-            " : " +
-            _beaconsCollector[key].toStringAsFixed(2) +
-            " mm\n";
-      }
+      fg += (first ? "" : ",") + _beaconsCollector[key].toStringAsFixed(2);
+      doubleList.add(_beaconsCollector[key]);
+      first = false;
+      success += "Signal #" +
+          (i++).toString() +
+          " : " +
+          _beaconsCollector[key].toStringAsFixed(2) +
+          " mm\n";
     });
 //    _totalProjectBeaconsDouble.add(doubleList);
     fg += '\n';
@@ -180,8 +173,8 @@ class _StaffMapState extends State<StaffMap>
 
     if (Platform.isIOS) {
       regions.add(Region(
-          identifier: 'com.aprilbrother.rfc1034identifier',
-          proximityUUID: 'B5B182C7-EAB1-4988-AA99-B5C1517008D9'));
+          identifier: 'com.bluecats.BlueCats',
+          proximityUUID: '61687109-905F-4436-91F8-E602F514C96D'));
     } else {
       regions.add(Region(identifier: 'com.aprilbrother'));
     }
@@ -196,25 +189,9 @@ class _StaffMapState extends State<StaffMap>
           });
           _beacons.sort(_compareParameters);
           _beacons.forEach((beacon) {
-            if (beacon.accuracy > 0) {
-              String mac = "";
-              if(beacon.minor == 31343){
-                mac = "E4:F5:46:61:6F:7A131343";
-              }
-              if(beacon.minor == 47935){
-                mac = "C3:A7:10:53:3F:BB147935";
-              }
-              if(beacon.minor == 256){
-                mac = "D0:5F:5B:74:8E:B21256";
-              }
-              if(beacon.minor == 49434){
-                mac = "D2:2A:96:01:1A:C1149434";
-              }
-              if(beacon.minor == 24218){
-                mac = "F1:80:31:49:9A:5E124218";
-              }
-              _beaconsCollector[mac] = beacon.accuracy * 100;
-            }
+            _beaconsCollector[beacon.macAddress +
+                beacon.major.toString() +
+                beacon.minor.toString()] = beacon.accuracy * 100;
           });
           if (_beaconsCollector.length == 5) {
             saveFingerprintToFiles();
@@ -233,25 +210,9 @@ class _StaffMapState extends State<StaffMap>
           });
           _beaconsPos.sort(_compareParameters);
           _beaconsPos.forEach((beacon) {
-            if (beacon.accuracy > 0) {
-              String mac = "";
-              if(beacon.minor == 31343){
-                mac = "E4:F5:46:61:6F:7A131343";
-              }
-              if(beacon.minor == 47935){
-                mac = "C3:A7:10:53:3F:BB147935";
-              }
-              if(beacon.minor == 256){
-                mac = "CD0:5F:5B:74:8E:B21256";
-              }
-              if(beacon.minor == 49434){
-                mac = "D2:2A:96:01:1A:C1149434";
-              }
-              if(beacon.minor == 24218){
-                mac = "F1:80:31:49:9A:5E124218";
-              }
-              _beaconsCollectorPos[mac] = beacon.accuracy * 100;
-            }
+            _beaconsCollectorPos[beacon.macAddress +
+                beacon.major.toString() +
+                beacon.minor.toString()] = beacon.accuracy * 100;
           });
           if (_beaconsCollectorPos.length == 5) {
             Position where = locating();
@@ -394,7 +355,7 @@ class _StaffMapState extends State<StaffMap>
                             textAlign: TextAlign.left,
                           )),
                       Positioned(
-                        top: 640,
+                        top: 580,
                         left: 10,
                         right: 10,
                         child: Slider(
@@ -479,13 +440,13 @@ class _StaffMapState extends State<StaffMap>
         }
       }
       children.add(new Positioned(
-          top: p.top.toDouble()+10,
-          left: p.left.toDouble()+12,
+          top: p.top.toDouble(),
+          left: p.left.toDouble(),
           child: Opacity(
             opacity: enough ? 1 : 0.4,
             child: new SizedBox(
-              width: 96.0,
-              height: 75.0,
+              width: 90.0,
+              height: 70.0,
               child: RaisedButton(
                 child: Text(
                     "Nombre : " +
