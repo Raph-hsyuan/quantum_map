@@ -1,9 +1,11 @@
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_beacon/flutter_beacon.dart';
+import 'kalman.dart';
 
 int currentMinor = 0;
 String currentUUID = '';
@@ -21,11 +23,14 @@ class _BeaconsState extends State<Beacons> {
   StreamSubscription<RangingResult> _streamRanging;
   final _regionBeacons = <Region, List<Beacon>>{};
   final _beacons = <Beacon>[];
+  final _beaconsCollector = HashMap<String, KalmanFilter>();
 
   @override
   void initState() {
     super.initState();
     initBeacon();
+    KalmanFilter filter = new KalmanFilter(1);
+    filter.forgettingFactor = 0.5;
   }
 
   initBeacon() async {
@@ -96,6 +101,22 @@ class _BeaconsState extends State<Beacons> {
                 children: ListTile.divideTiles(
                     context: context,
                     tiles: _beacons.map((beacon) {
+                      if (!_beaconsCollector.containsKey(beacon.macAddress +
+                          beacon.major.toString() +
+                          beacon.minor.toString())) {
+                        KalmanFilter filter = new KalmanFilter(1);
+                        filter.forgettingFactor = 0.9;
+                        _beaconsCollector.putIfAbsent(
+                            beacon.macAddress +
+                                beacon.major.toString() +
+                                beacon.minor.toString(),
+                            () => filter);
+                      }
+                      _beaconsCollector[beacon.macAddress +
+                              beacon.major.toString() +
+                              beacon.minor.toString()]
+                          .addObservation(
+                              1.0, beacon.accuracy, [beacon.accuracy]);
                       return ListTile(
                         title: Text(
                             beacon.proximityUUID +
@@ -109,7 +130,8 @@ class _BeaconsState extends State<Beacons> {
                           mainAxisSize: MainAxisSize.max,
                           children: <Widget>[
                             Flexible(
-                                child: Text('Acc: ${beacon.accuracy}m\n',
+                                child: Text(
+                                    'Acc: ${beacon.accuracy}m, Kalman: ${_beaconsCollector[beacon.macAddress + beacon.major.toString() + beacon.minor.toString()].beta}\n',
                                     style: TextStyle(fontSize: 23.0)),
                                 flex: 2,
                                 fit: FlexFit.tight)
