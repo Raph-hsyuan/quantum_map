@@ -11,6 +11,8 @@ import 'package:ovprogresshud/progresshud.dart';
 // ignore: implementation_imports
 import 'package:simple_cluster/src/dbscan.dart';
 
+import 'KalmanFilter1D.dart';
+
 class Line {
   Offset p1;
   Offset p2;
@@ -53,8 +55,10 @@ class _StaffMapState extends State<StaffMap>
   final _beacons = <Beacon>[];
   final _beaconsPos = <Beacon>[];
 
-  final _beaconsCollector = HashMap<String, double>();
-  final _beaconsCollectorPos = HashMap<String, double>();
+//  final _beaconsCollector = HashMap<String, double>();
+//  final _beaconsCollectorPos = HashMap<String, double>();
+  final _beaconsCollector = HashMap<String, KalmanFilter1D>();
+  final _beaconsCollectorPos = HashMap<String, KalmanFilter1D>();
 
   final _beaconsList = <String>[];
   bool logging = false;
@@ -132,13 +136,14 @@ class _StaffMapState extends State<StaffMap>
     bool first = true;
     List<double> doubleList = new List<double>();
     _beaconsList.forEach((key) {
-      fg += (first ? "" : ",") + _beaconsCollector[key].toStringAsFixed(2);
-      doubleList.add(_beaconsCollector[key]);
+      fg += (first ? "" : ",") +
+          _beaconsCollector[key].predict(1).toStringAsFixed(2);
+      doubleList.add(_beaconsCollector[key].predict(1));
       first = false;
       success += "Signal #" +
           (i++).toString() +
           " : " +
-          _beaconsCollector[key].toStringAsFixed(2) +
+          _beaconsCollector[key].predict(1).toStringAsFixed(2) +
           " mm\n";
     });
 //    _totalProjectBeaconsDouble.add(doubleList);
@@ -189,9 +194,23 @@ class _StaffMapState extends State<StaffMap>
           });
           _beacons.sort(_compareParameters);
           _beacons.forEach((beacon) {
-            _beaconsCollector[beacon.macAddress +
+            if (!_beaconsCollector.containsKey(beacon.macAddress +
                 beacon.major.toString() +
-                beacon.minor.toString()] = beacon.accuracy * 100;
+                beacon.minor.toString())) {
+              KalmanFilter1D filter = new KalmanFilter1D(0.5, 2);
+              _beaconsCollector.putIfAbsent(
+                  beacon.macAddress +
+                      beacon.major.toString() +
+                      beacon.minor.toString(),
+                  () => filter);
+            }
+            _beaconsCollector[beacon.macAddress +
+                    beacon.major.toString() +
+                    beacon.minor.toString()]
+                .filter(beacon.accuracy, 2);
+//            _beaconsCollector[beacon.macAddress +
+//                beacon.major.toString() +
+//                beacon.minor.toString()] = beacon.accuracy * 100;
           });
           if (_beaconsCollector.length == 5) {
             saveFingerprintToFiles();
@@ -210,9 +229,23 @@ class _StaffMapState extends State<StaffMap>
           });
           _beaconsPos.sort(_compareParameters);
           _beaconsPos.forEach((beacon) {
-            _beaconsCollectorPos[beacon.macAddress +
+            if (!_beaconsCollectorPos.containsKey(beacon.macAddress +
                 beacon.major.toString() +
-                beacon.minor.toString()] = beacon.accuracy * 100;
+                beacon.minor.toString())) {
+              KalmanFilter1D filter = new KalmanFilter1D(0.5, 2);
+              _beaconsCollectorPos.putIfAbsent(
+                  beacon.macAddress +
+                      beacon.major.toString() +
+                      beacon.minor.toString(),
+                  () => filter);
+            }
+            _beaconsCollectorPos[beacon.macAddress +
+                    beacon.major.toString() +
+                    beacon.minor.toString()]
+                .filter(beacon.accuracy, 2);
+//            _beaconsCollectorPos[beacon.macAddress +
+//                beacon.major.toString() +
+//                beacon.minor.toString()] = beacon.accuracy * 100;
           });
           if (_beaconsCollectorPos.length == 5) {
             Position where = locating();
@@ -241,7 +274,7 @@ class _StaffMapState extends State<StaffMap>
     pos.addAll(_totalProjectBeaconsDouble);
     List<double> doubleList = new List<double>();
     _beaconsList.forEach((key) {
-      doubleList.add(_beaconsCollectorPos[key]);
+      doubleList.add(_beaconsCollectorPos[key].predict(1));
     });
     pos.add(doubleList);
     dbscan.run(pos);
