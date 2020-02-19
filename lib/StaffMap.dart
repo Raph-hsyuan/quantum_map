@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:io';
 
+import 'package:custom_switch/custom_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_beacon/flutter_beacon.dart';
 import 'dart:async';
@@ -58,9 +59,9 @@ class _StaffMapState extends State<StaffMap>
 //  final _beaconsCollector = HashMap<String, double>();
 //  final _beaconsCollectorPos = HashMap<String, double>();
   final _beaconsCollector = HashMap<String, KalmanFilter1D>();
-  final _beaconsCollectorPos = HashMap<String, KalmanFilter1D>();
 
   final _beaconsList = <String>[];
+  String position = "UNKNOWN";
   bool logging = false;
   bool positioning = false;
   _StaffMapState();
@@ -71,9 +72,9 @@ class _StaffMapState extends State<StaffMap>
   final _totalProjectBeacons = new HashMap<Position, List<String>>();
   final _totalMapDouble = new HashMap<Position, List<List<double>>>();
   final _totalProjectBeaconsDouble = new List<List<double>>();
-  double epsilon = 50;
+  double epsilon = 1;
   DBSCAN dbscan = new DBSCAN(
-    epsilon: 50,
+    epsilon: 1,
     minPoints: 3,
   );
   @override
@@ -229,17 +230,17 @@ class _StaffMapState extends State<StaffMap>
           });
           _beaconsPos.sort(_compareParameters);
           _beaconsPos.forEach((beacon) {
-            if (!_beaconsCollectorPos.containsKey(beacon.macAddress +
+            if (!_beaconsCollector.containsKey(beacon.macAddress +
                 beacon.major.toString() +
                 beacon.minor.toString())) {
               KalmanFilter1D filter = new KalmanFilter1D(0.5, 2);
-              _beaconsCollectorPos.putIfAbsent(
+              _beaconsCollector.putIfAbsent(
                   beacon.macAddress +
                       beacon.major.toString() +
                       beacon.minor.toString(),
                   () => filter);
             }
-            _beaconsCollectorPos[beacon.macAddress +
+            _beaconsCollector[beacon.macAddress +
                     beacon.major.toString() +
                     beacon.minor.toString()]
                 .filter(beacon.accuracy, 2);
@@ -247,20 +248,14 @@ class _StaffMapState extends State<StaffMap>
 //                beacon.major.toString() +
 //                beacon.minor.toString()] = beacon.accuracy * 100;
           });
-          if (_beaconsCollectorPos.length == 5) {
+          if (_beaconsCollector.length == 5) {
             Position where = locating();
-            if (where.top == -404) {
-              positioning = false;
-              Progresshud.dismiss();
-              Progresshud.showErrorWithStatus("Pas réussi");
-            } else {
-              Progresshud.dismiss();
-              Progresshud.showSuccessWithStatus("Terminé avec succès");
+            print("positioning");
+            if (where.top != -404) {
               setState(() {
                 points.clear();
                 points.add(new Offset(
                     where.left.toDouble() + 50, where.top.toDouble() + 40));
-                positioning = false;
               });
             }
           }
@@ -274,16 +269,32 @@ class _StaffMapState extends State<StaffMap>
     pos.addAll(_totalProjectBeaconsDouble);
     List<double> doubleList = new List<double>();
     _beaconsList.forEach((key) {
-      doubleList.add(_beaconsCollectorPos[key].predict(1));
+      doubleList.add(_beaconsCollector[key].predict(1));
     });
     pos.add(doubleList);
+    String p = "Position current:   ";
+    doubleList.forEach((element) {
+      p += element.toStringAsFixed(2) + "/";
+    });
+    setState(() {
+      position = p;
+    });
+    dbscan = new DBSCAN(
+      epsilon: epsilon,
+      minPoints: 3,
+    );
     dbscan.run(pos);
     int area = dbscan.label[dbscan.label.length - 1];
     if (area == -1) {
+      print("FAILED TO GET LOCATION");
+      setState(() {
+        if (epsilon < 30) epsilon += 0.5;
+      });
       return new Position(-404, -404);
     }
+
     int mark = -404;
-    for (int i = 0; i < dbscan.label.length; i++) {
+    for (int i = 0; i < dbscan.label.length - 1; i++) {
       if (dbscan.label[i] == area) {
         mark = i;
         break;
@@ -340,15 +351,53 @@ class _StaffMapState extends State<StaffMap>
                             },
                           )),
                       Positioned(
-                          top: 190,
-                          left: 25,
-                          child: IconButton(
-                            icon: Icon(Icons.my_location),
-                            iconSize: 40,
-                            color: Colors.brown[600],
-                            onPressed: () {
-                              getLocation();
-                            },
+                        top: 190,
+                        left: 25,
+                        child: CustomSwitch(
+                            activeColor: Colors.brown,
+                            value: positioning,
+                            onChanged: (value) {
+                              setState(() {
+                                positioning = value;
+                                if (_totalMapDouble.length < 2 &&
+                                    positioning == true) {
+                                  Progresshud.showErrorWithStatus(
+                                      "Positionnement Non Disponible !");
+                                }
+                                print("positioning=" + positioning.toString());
+                              });
+                            }),
+                      ),
+                      Positioned(
+                          top: 197,
+                          left: 95,
+                          right: 35,
+                          child: new Text(
+                            'Position',
+                            style: new TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontSize: 15.0,
+                                color: Colors.grey[350],
+                                fontFamily: 'Broadwell'),
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            textAlign: TextAlign.left,
+                          )),
+                      Positioned(
+                          top: 110,
+                          left: 40,
+                          child: new Text(
+                            position,
+                            style: new TextStyle(
+                                fontWeight: FontWeight.w900,
+                                fontSize: 10.0,
+                                color: Colors.grey[350],
+                                fontFamily: 'Broadwell'),
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            textAlign: TextAlign.left,
                           )),
                       Positioned(
                           top: 250,
@@ -393,7 +442,7 @@ class _StaffMapState extends State<StaffMap>
                         right: 10,
                         child: Slider(
                           min: 0,
-                          max: 300,
+                          max: 30,
                           activeColor: Colors.brown,
                           inactiveColor: Colors.black,
                           value: epsilon,
@@ -507,18 +556,6 @@ class _StaffMapState extends State<StaffMap>
         child: new Container(),
         foregroundPainter: new MapPainter(lines, points)));
     return children;
-  }
-
-  void getLocation() async {
-    if (_totalMapDouble.length < 2) {
-      Progresshud.showErrorWithStatus("Positionnement Non Disponible !");
-      return;
-    }
-    setState(() {
-      positioning = true;
-    });
-    Progresshud.setDefaultMaskTypeGradient();
-    Progresshud.showWithStatus('Positionnement ...');
   }
 }
 
