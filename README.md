@@ -6,6 +6,7 @@
 *   [Clients cibles](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Introduction#clients-cibles)
 *   [UI Draft](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Introduction#UI)
 *   [Algorithme-DBSCAN](https://github.com/huangshenyuan-unice/quantum_map/wiki/Algorithme-DBSCAN)
+*   [Algorithme-Kalman Filter](https://stackoverflow.com/questions/19537884/explain-process-noise-terminology-in-kalman-filter)
 *   [First Demo](https://github.com/huangshenyuan-unice/quantum_map/wiki/D%C3%A9monstration--du-projet)
 # Scénarios
 *   [Scénario d'application](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Scénarios#scénario-dapplication) 
