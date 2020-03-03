@@ -26,6 +26,8 @@
 *  [Sprint 1](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Organisation-du-projet#sprint-1)
 *  [Sprint 2](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Organisation-du-projet#sprint-2)
 *  [Sprint 3](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Organisation-du-projet#sprint-3)
+*  [Sprint 4](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Organisation-du-projet#sprint-4)
+*  [Sprint 5](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Organisation-du-projet#sprint-5)
 
 # Suivi le projet
 * [Sprint 1](https://github.com/huangshenyuan-unice/ELIM_2019/issues/1)
