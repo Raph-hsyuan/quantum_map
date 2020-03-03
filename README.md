@@ -32,7 +32,9 @@
 # Suivi le projet
 * [Sprint 1](https://github.com/huangshenyuan-unice/ELIM_2019/issues/1)
 * [Sprint 2](https://github.com/huangshenyuan-unice/ELIM_2019/issues/2)
-* [Sprint 3](https://github.com/huangshenyuan-unice/ELIM_2019/issues/3)
+* [Sprint 3](https://github.com/huangshenyuan-unice/quantum_map/issues?q=is%3Aopen+is%3Aissue+label%3ASprint3)
+* [Sprint 4](https://github.com/huangshenyuan-unice/quantum_map/issues?q=is%3Aopen+is%3Aissue+label%3ASprint4)
+* [Sprint 5](https://github.com/huangshenyuan-unice/quantum_map/issues?q=is%3Aopen+is%3Aissue+label%3ASprint5)
 
 # Démostration du projet
 * [L'interface de visiteur](https://github.com/huangshenyuan-unice/quantum_map/wiki/Démonstration--du-projet#linterface-du-visiteur)
