@@ -6,6 +6,7 @@
 *   [Clients cibles](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Introduction#clients-cibles)
 *   [UI Draft](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Introduction#UI)
 *   [Algorithme-DBSCAN](https://github.com/huangshenyuan-unice/quantum_map/wiki/Algorithme-DBSCAN)
+*   [Algorithme-Kalman Filter](https://stackoverflow.com/questions/19537884/explain-process-noise-terminology-in-kalman-filter)
 *   [First Demo](https://github.com/huangshenyuan-unice/quantum_map/wiki/D%C3%A9monstration--du-projet)
 # Scénarios
 *   [Scénario d'application](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Scénarios#scénario-dapplication) 
@@ -26,11 +27,15 @@
 *  [Sprint 1](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Organisation-du-projet#sprint-1)
 *  [Sprint 2](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Organisation-du-projet#sprint-2)
 *  [Sprint 3](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Organisation-du-projet#sprint-3)
+*  [Sprint 4](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Organisation-du-projet#sprint-4)
+*  [Sprint 5](https://github.com/huangshenyuan-unice/ELIM_2019/wiki/Organisation-du-projet#sprint-5)
 
 # Suivi le projet
 * [Sprint 1](https://github.com/huangshenyuan-unice/ELIM_2019/issues/1)
 * [Sprint 2](https://github.com/huangshenyuan-unice/ELIM_2019/issues/2)
-* [Sprint 3](https://github.com/huangshenyuan-unice/ELIM_2019/issues/3)
+* [Sprint 3](https://github.com/huangshenyuan-unice/quantum_map/issues?q=is%3Aopen+is%3Aissue+label%3ASprint3)
+* [Sprint 4](https://github.com/huangshenyuan-unice/quantum_map/issues?q=is%3Aopen+is%3Aissue+label%3ASprint4)
+* [Sprint 5](https://github.com/huangshenyuan-unice/quantum_map/issues?q=is%3Aopen+is%3Aissue+label%3A%22Sprint+5%22)
 
 # Démostration du projet
 * [L'interface de visiteur](https://github.com/huangshenyuan-unice/quantum_map/wiki/Démonstration--du-projet#linterface-du-visiteur)
